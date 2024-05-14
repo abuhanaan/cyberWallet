@@ -11,6 +11,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { Integer } from 'aws-sdk/clients/apigateway';
 import { NotFound } from '@aws-sdk/client-s3';
 import { generateReferenceId } from 'src/utils/referenceGenerator';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class TransactionService {
@@ -26,8 +27,9 @@ export class TransactionService {
     }
   }
 
-  private async checkIfPinIsCorrect(user: UserEntity, pin: Integer) {
-    if (user.wallet.transactionPin === pin) {
+  private async checkIfPinIsCorrect(user: UserEntity, pin: string) {
+    const isPinValid = await bcrypt.compare(pin, user.wallet.transactionPin);
+    if (!isPinValid) {
       throw new BadRequestException(
         'Pin mismatch, please provide the right pin',
       );

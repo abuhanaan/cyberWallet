@@ -35,5 +35,5 @@ export class CreateUserDto {
   @MaxLength(4)
   @IsNotEmpty()
   @ApiProperty()
-  transactionPin?: number;
+  transactionPin?: string;
 }

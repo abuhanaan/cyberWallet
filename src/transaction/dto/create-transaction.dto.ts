@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Double, Integer } from 'aws-sdk/clients/apigateway';
-import { IsNotEmpty, IsNumber, MaxLength, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateTransactionDto {
   @IsNumber()
@@ -18,10 +24,10 @@ export class CreateTransactionDto {
   @ApiProperty()
   beneficiarryWalletId: number;
 
-  @IsNumber()
+  @IsNumberString()
   @MinLength(4)
   @MaxLength(4)
   @IsNotEmpty()
   @ApiProperty()
-  transactionPin: Integer;
+  transactionPin: string;
 }

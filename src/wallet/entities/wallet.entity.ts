@@ -12,7 +12,7 @@ export class WalletEntity implements Wallet {
 
   @ApiProperty()
   balance: number;
-  transactionPin: number;
+  transactionPin: string;
 
   @ApiProperty({ required: false, type: () => UserEntity })
   user?: UserEntity;

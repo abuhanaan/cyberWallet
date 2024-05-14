@@ -25,7 +25,7 @@ model Wallet  {
   id    Int  @id @default(autoincrement())
   userId Int @unique()
   balance Int
-  transactionPin   Int
+  transactionPin   String
 
 
   user User   @relation(fields: [userId], references: [id])

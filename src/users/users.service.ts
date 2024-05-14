@@ -7,6 +7,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+
+export const roundsOfHashing = 10;
 
 @Injectable()
 export class UsersService {
@@ -41,11 +44,16 @@ export class UsersService {
           },
         });
 
+        const hashedPin = await bcrypt.hash(
+          createUserDto.transactionPin,
+          roundsOfHashing,
+        );
+
         const newWallet = await prisma.wallet.create({
           data: {
             userId: newUser.id,
             balance: 0,
-            transactionPin: createUserDto.transactionPin,
+            transactionPin: hashedPin,
           },
         });
 
