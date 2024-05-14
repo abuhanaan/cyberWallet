@@ -35,6 +35,7 @@ model Wallet  {
 
 model Transaction {
   id     Int  @id @default(autoincrement())
+  reference String @unique()
   userId   Int
   amount   Int
   walletId Int

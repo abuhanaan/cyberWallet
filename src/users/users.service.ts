@@ -31,7 +31,7 @@ export class UsersService {
           error: `User with email ${createUserDto.email} already exist`,
         });
       }
-      const dbtransaction = await this.prisma.$transaction(async (prisma) => {
+      const dbTransaction = await this.prisma.$transaction(async (prisma) => {
         const newUser = await prisma.user.create({
           data: {
             firstName: createUserDto.firstName,
@@ -51,7 +51,7 @@ export class UsersService {
 
         return [newUser];
       });
-      return dbtransaction[0];
+      return dbTransaction[0];
     } catch (error) {
       console.log(error);
       throw error;

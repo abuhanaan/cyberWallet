@@ -10,6 +10,9 @@ export class TransactionEntity implements Transaction {
   userId: number;
 
   @ApiProperty()
+  reference: string;
+
+  @ApiProperty()
   amount: number;
 
   @ApiProperty()
