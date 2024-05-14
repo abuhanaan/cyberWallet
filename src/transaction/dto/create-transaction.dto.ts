@@ -6,15 +6,15 @@ export class CreateTransactionDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  userId: Integer;
+  userId: number;
 
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  amount: Double;
+  amount: number;
 
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  walletId: Integer;
+  walletId: number;
 }
