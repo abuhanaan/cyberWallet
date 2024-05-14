@@ -8,6 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { UserEntity } from './entities/user.entity';
 
 export const roundsOfHashing = 10;
 
@@ -23,7 +24,7 @@ export class UsersService {
       });
     }
   }
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     try {
       const existingUser = await this.prisma.user.findUnique({
         where: { email: createUserDto.email },
@@ -59,7 +60,10 @@ export class UsersService {
 
         return [newUser];
       });
-      return dbTransaction[0];
+      return this.prisma.user.findUnique({
+        where: { id: dbTransaction[0].id },
+        include: { wallet: true },
+      });
     } catch (error) {
       console.log(error);
       throw error;

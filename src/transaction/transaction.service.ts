@@ -28,7 +28,9 @@ export class TransactionService {
   }
 
   private async checkIfPinIsCorrect(user: UserEntity, pin: string) {
+    // console.log(user.wallet.transactionPin);
     const isPinValid = await bcrypt.compare(pin, user.wallet.transactionPin);
+
     if (!isPinValid) {
       throw new BadRequestException(
         'Pin mismatch, please provide the right pin',
@@ -37,7 +39,10 @@ export class TransactionService {
   }
 
   private async checkIfUserExist(id: Integer): Promise<UserEntity> {
-    const user = await this.prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { wallet: true },
+    });
     if (!user) {
       throw new NotFoundException(`User with id ${id} does not exist`);
     }
@@ -62,6 +67,7 @@ export class TransactionService {
     const beneficiarry = await this.checkIfWalletExist(
       createTransactionDto.beneficiarryWalletId,
     );
+    // console.log(user);
     await this.checkIfPinIsCorrect(user, createTransactionDto.transactionPin);
 
     const dbTransaction = await this.prisma.$transaction(async (prisma) => {
