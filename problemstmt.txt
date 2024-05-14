@@ -1,0 +1,3 @@
+Create a controller with a function that creates a wallet for a user
+- In a separate controller, create another function that enables a user credit another user's wallet on the same application.
+- Create routes that will use these controllers
