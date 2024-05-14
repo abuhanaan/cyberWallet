@@ -64,16 +64,23 @@ export class TransactionService {
   }
   async create(createTransactionDto: CreateTransactionDto) {
     const user = await this.checkIfUserExist(createTransactionDto.userId);
+    const transactionRef = generateReferenceId();
     const beneficiarry = await this.checkIfWalletExist(
       createTransactionDto.beneficiarryWalletId,
     );
     // console.log(user);
     await this.checkIfPinIsCorrect(user, createTransactionDto.transactionPin);
+    await this.checkIfSenderBalanceIsSufficient(
+      user,
+      createTransactionDto.amount,
+    );
+
+    await this.checkIfTransactionAlreadyExist(transactionRef);
 
     const dbTransaction = await this.prisma.$transaction(async (prisma) => {
       const newTransaction = await prisma.transaction.create({
         data: {
-          reference: generateReferenceId(),
+          reference: transactionRef,
           userId: user.id,
           amount: createTransactionDto.amount,
           walletId: createTransactionDto.beneficiarryWalletId,
